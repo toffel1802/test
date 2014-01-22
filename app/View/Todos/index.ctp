@@ -24,27 +24,49 @@
             <tr>
               <td><?php $i++;
                   echo "$i"; ?></td>
-              <td><?php echo $todo['Todo']['description']; ?></td>
-              <td><?php echo $date = date("H:i d.m.Y", strtotime($todo['Todo']['created'])); ?></td>
-              <td><?php $timestamp = strtotime($todo['Todo']['created']);
-          $day = $todo['Todo']['days'] * 86400;
-          $std = $todo['Todo']['hours'] * 3600;
-          $min = $todo['Todo']['minute'] * 60;
-          $deadline = round((time() - ($timestamp + $day + $std + $min)) / 60);
-          if ($deadline < 0){ 
-
-          echo abs($deadline);
-          echo " Minuten"; };
-          ?></td>
-          
-                   <td><?php
-           echo $this->Html->link(
-    $this->Html->image('Edit.png',
-       array("alt" => __('Edit'), "title" => __('Edit'))), 
-    array('action'=>'edit', $todo['Todo']['id']), 
-    array('escape' => false, 'confirm' => __('Are you sure you want to edit this Todo?')) 
-); ?>
-    </td>
+              <td width="50%"><?php echo $todo['Todo']['description']; ?></td>
+              <td><?php echo $date = date("H:i - d.m.y", strtotime($todo['Todo']['created'])); ?></td>
+              <td>
+               <?php
+                  $day = $todo['Todo']['days'] * 86400;
+                  $std = $todo['Todo']['hours'] * 3600;
+                  $min = $todo['Todo']['minute'] * 60;
+                  $deadline = (strtotime($todo['Todo']['created'])) + $day + $std + $min;
+                  $date_aktuell = time();
+                  $differenz = $deadline - $date_aktuell;
+                  if($differenz >= 0)
+                  {
+                  $zeit = mktime(0,0,0,0,0,0);
+                  $rechne_zeit = $zeit + $differenz;
+                  $sekunde = date ("s",$rechne_zeit);
+                  $minute = date ("i",$rechne_zeit);
+                  $stunde = date ("H",$rechne_zeit);
+                  echo "$stunde:$minute:$sekunde";
+                  }
+                  if ( ($differenz < 0 AND $todo['Todo']['minute'] > 0)
+                                  OR
+                   ($differenz < 0 AND $todo['Todo']['hours'] > 0)
+                                  OR
+                   ($differenz < 0 AND $todo['Todo']['days'] > 0))
+                  {
+                  echo "<b style=\"color:red\">deadline passed!!!</b>";
+                  }
+                  if ((is_null($differenz))
+                                OR
+                      ( is_null($todo['Todo']['days']) AND is_null($todo['Todo']['hours']) AND is_null($todo['Todo']['minute'])))
+                  {echo "<b style=\"color:green\">no deadline</b>";}
+                    
+                  ?>
+                 </td> 
+                   <td>
+                  <?php
+                  echo $this->Html->link(
+                  $this->Html->image('Edit.png',
+                  array("alt" => __('Edit'), "title" => __('Edit'))), 
+                  array('action'=>'edit', $todo['Todo']['id']), 
+                  array('escape' => false, 'confirm' => __('Are you sure you want to edit this Todo?')) 
+                  ); ?>
+                  </td>
           
           
           <td><?php
@@ -92,7 +114,7 @@
             <tr>
               <td><?php $i++;
                   echo "$i"; ?></td>
-              <td><?php echo $todo['Todo']['description']; ?></td>
+              <td width="50%"><?php echo $todo['Todo']['description']; ?></td>
               <td><?php echo $date = date("H:i d.m.Y", strtotime($todo['Todo']['created'])); ?></td>
               
               

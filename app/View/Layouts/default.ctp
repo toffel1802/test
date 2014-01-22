@@ -57,5 +57,6 @@ $cakeDescription = __d('cake_dev', 'Praktikum, learning by Luke');
 	<section id="body">
 		<?php echo $this->fetch('content'); ?>
 	</section>
+  
 </body>
 </html>

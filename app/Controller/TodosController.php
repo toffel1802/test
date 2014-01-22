@@ -7,6 +7,7 @@ class TodosController extends AppController {
     $todos = $this->Todo->find('all', array('conditions' => array('Todo.resolved'=>false)));
 		$this->set('todos', $todos);
     $this->set('resolved', $this->Todo->find('all', array('conditions' => array('Todo.resolved'=>true))));
+        
 	}
 
 	public function add() {
@@ -28,7 +29,8 @@ class TodosController extends AppController {
         throw new NotFoundException('Could not find your todo');
       }
 		}
-	}
+	} 
+
   
   
   	public function edit($id) {
